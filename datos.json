@@ -1,0 +1,121 @@
+{
+  "fecha": "23/06/2026",
+  "fondos": [
+    {
+      "nombre": "Tandem Pesos Ahorro Plus",
+      "moneda": "ARS",
+      "patrimonio_neto": 31399011049.51,
+      "activos": [
+        { "nombre": "Fideicomisos Financieros (24 series)", "ticker": "FF", "tipo": "fci", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 9966622139.83 },
+        { "nombre": "FCI Allaria Ahorro - Clase C", "ticker": "ALLARIA-ARS", "tipo": "fci", "nominales": 48862819.6697, "precio_referencia": 31.9261, "precio_fijo": false, "total_valuado": 1560000000.00 },
+        { "nombre": "Pases y Aperturas", "ticker": "PASE", "tipo": "pase", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 14371566541.69 },
+        { "nombre": "Cheques de Pago Diferido (11)", "ticker": "CPD", "tipo": "cpd", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 5574882385.23 },
+        { "nombre": "Disponibilidades", "ticker": "DISP", "tipo": "disponibilidades", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 1108669.17 }
+      ]
+    },
+    {
+      "nombre": "Tandem Dólares Retorno Total",
+      "moneda": "USD",
+      "patrimonio_neto": 3334873.51,
+      "activos": [
+        { "nombre": "AE38 - Bono Rep. Argentina AE38", "ticker": "AE38", "tipo": "titulo_publico", "nominales": 385800, "precio_referencia": 0.8386, "precio_fijo": false, "total_valuado": 323531.88 },
+        { "nombre": "AO28 - Bono Tesoro Nacional", "ticker": "AO28", "tipo": "titulo_publico", "nominales": 189300, "precio_referencia": 0.9699, "precio_fijo": false, "total_valuado": 183602.07 },
+        { "nombre": "BPOB8 - Bono Bopreal 2028 Serie 4", "ticker": "BPOB8", "tipo": "titulo_publico", "nominales": 1027771, "precio_referencia": 0.9171, "precio_fijo": false, "total_valuado": 942568.78 },
+        { "nombre": "GD35 - Bonar USD 2035", "ticker": "GD35", "tipo": "titulo_publico", "nominales": 331000, "precio_referencia": 0.8419, "precio_fijo": false, "total_valuado": 278668.90 },
+        { "nombre": "GD38 - Bono Rep. Argentina 2038", "ticker": "GD38", "tipo": "titulo_publico", "nominales": 153208, "precio_referencia": 0.8772, "precio_fijo": false, "total_valuado": 134394.06 },
+        { "nombre": "PN43O - ON Pan American C43", "ticker": "PN43O", "tipo": "obligacion_negociable", "nominales": 168000, "precio_referencia": 1.1015, "precio_fijo": false, "total_valuado": 185057.90 },
+        { "nombre": "YM34O - ON YPF Clase 34", "ticker": "YM34O", "tipo": "obligacion_negociable", "nominales": 164400, "precio_referencia": 1.0973, "precio_fijo": false, "total_valuado": 180388.47 },
+        { "nombre": "Cheques de Pago Diferido (4)", "ticker": "CPD", "tipo": "cpd", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 1090084.82 },
+        { "nombre": "Disponibilidades", "ticker": "DISP", "tipo": "disponibilidades", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 23048.59 }
+      ]
+    },
+    {
+      "nombre": "Tandem Balanceado I",
+      "moneda": "ARS",
+      "patrimonio_neto": 101942.81,
+      "activos": [
+        { "nombre": "T30J6 - Lecap", "ticker": "T30J6", "tipo": "titulo_publico", "nominales": 10000, "precio_referencia": 1.4428, "precio_fijo": false, "total_valuado": 14428.20 },
+        { "nombre": "AL30 - Bonos Rep. Argentina 2030", "ticker": "AL30", "tipo": "titulo_publico", "nominales": 22, "precio_referencia": 970.0000, "precio_fijo": false, "total_valuado": 21340.00 },
+        { "nombre": "Disponibilidades", "ticker": "DISP", "tipo": "disponibilidades", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 66174.61 }
+      ]
+    },
+    {
+      "nombre": "Tandem Renta Pesos",
+      "moneda": "ARS",
+      "patrimonio_neto": 1055173.13,
+      "activos": [
+        { "nombre": "Cuenta Remunerada Comafi (intereses)", "ticker": "CR", "tipo": "cuenta_remunerada", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 7908.44 },
+        { "nombre": "Disponibilidades", "ticker": "DISP", "tipo": "disponibilidades", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 1047264.69 }
+      ]
+    },
+    {
+      "nombre": "Tandem Crecimiento I",
+      "moneda": "ARS",
+      "patrimonio_neto": 100000.00,
+      "activos": [
+        { "nombre": "Disponibilidades", "ticker": "DISP", "tipo": "disponibilidades", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 100000.00 }
+      ]
+    },
+    {
+      "nombre": "Tandem Global",
+      "moneda": "USD",
+      "patrimonio_neto": 2105008.36,
+      "activos": [
+        { "nombre": "AO28 - Bono Tesoro Nacional", "ticker": "AO28", "tipo": "titulo_publico", "nominales": 372046, "precio_referencia": 0.9699, "precio_fijo": false, "total_valuado": 360847.42 },
+        { "nombre": "BPOA8 - Bono Bopreal 2028 Serie 4", "ticker": "BPOA8", "tipo": "titulo_publico", "nominales": 360000, "precio_referencia": 0.9182, "precio_fijo": false, "total_valuado": 330552.00 },
+        { "nombre": "BPOB8 - Bono Bopreal 2028 Serie 4", "ticker": "BPOB8", "tipo": "titulo_publico", "nominales": 499050, "precio_referencia": 0.9171, "precio_fijo": false, "total_valuado": 457678.76 },
+        { "nombre": "LUC5O - ON Luz De Tres Picos C5", "ticker": "LUC5O", "tipo": "obligacion_negociable", "nominales": 50000, "precio_referencia": 1.0352, "precio_fijo": false, "total_valuado": 51757.50 },
+        { "nombre": "MCC3O - ON Pecom C3", "ticker": "MCC3O", "tipo": "obligacion_negociable", "nominales": 100000, "precio_referencia": 1.0203, "precio_fijo": false, "total_valuado": 102034.43 },
+        { "nombre": "MIC4O - ON Mirgor Clase 4", "ticker": "MIC4O", "tipo": "obligacion_negociable", "nominales": 100000, "precio_referencia": 1.0273, "precio_fijo": false, "total_valuado": 102734.04 },
+        { "nombre": "MTC2O - ON Mastellone Clase 2", "ticker": "MTC2O", "tipo": "obligacion_negociable", "nominales": 100000, "precio_referencia": 1.0002, "precio_fijo": false, "total_valuado": 100017.51 },
+        { "nombre": "PLC5O - ON Pluspetrol Clase 5", "ticker": "PLC5O", "tipo": "obligacion_negociable", "nominales": 166000, "precio_referencia": 1.0620, "precio_fijo": false, "total_valuado": 176286.21 },
+        { "nombre": "YM34O - ON YPF Clase 34", "ticker": "YM34O", "tipo": "obligacion_negociable", "nominales": 135741, "precio_referencia": 1.0973, "precio_fijo": false, "total_valuado": 148942.28 },
+        { "nombre": "FCI Allaria Dólar Ahorro - Cl.B", "ticker": "ALLARIA-USD", "tipo": "fci", "nominales": 97799.61, "precio_referencia": 1.0225, "precio_fijo": false, "total_valuado": 100000.00 },
+        { "nombre": "Cheques de Pago Diferido (4)", "ticker": "CPD", "tipo": "cpd", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 70794.86 },
+        { "nombre": "Disponibilidades", "ticker": "DISP", "tipo": "disponibilidades", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 105696.24 }
+      ]
+    },
+    {
+      "nombre": "Tandem Global II",
+      "moneda": "USD",
+      "patrimonio_neto": 994.93,
+      "activos": [
+        { "nombre": "Disponibilidades", "ticker": "DISP", "tipo": "disponibilidades", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 996.13 }
+      ]
+    },
+    {
+      "nombre": "Tandem Global III",
+      "moneda": "USD",
+      "patrimonio_neto": 1000.00,
+      "activos": [
+        { "nombre": "Disponibilidades", "ticker": "DISP", "tipo": "disponibilidades", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 1000.00 }
+      ]
+    },
+    {
+      "nombre": "Tandem Global IV",
+      "moneda": "USD",
+      "patrimonio_neto": 2108244.73,
+      "activos": [
+        { "nombre": "ERM33 - Bono Entre Ríos 9.55% 2033", "ticker": "ERM33", "tipo": "titulo_publico", "nominales": 200000, "precio_referencia": 1.0378, "precio_fijo": false, "total_valuado": 207551.60 },
+        { "nombre": "LUC5O - ON Luz De Tres Picos C5", "ticker": "LUC5O", "tipo": "obligacion_negociable", "nominales": 200000, "precio_referencia": 1.0352, "precio_fijo": false, "total_valuado": 207030.00 },
+        { "nombre": "MCC3O - ON Pecom C3", "ticker": "MCC3O", "tipo": "obligacion_negociable", "nominales": 150000, "precio_referencia": 1.0203, "precio_fijo": false, "total_valuado": 153051.65 },
+        { "nombre": "MIC6O - ON Mirgor Clase 6", "ticker": "MIC6O", "tipo": "obligacion_negociable", "nominales": 200000, "precio_referencia": 1.0002, "precio_fijo": false, "total_valuado": 200044.71 },
+        { "nombre": "MTC2O - ON Mastellone Clase 2", "ticker": "MTC2O", "tipo": "obligacion_negociable", "nominales": 200000, "precio_referencia": 1.0002, "precio_fijo": false, "total_valuado": 200035.02 },
+        { "nombre": "PQCRO - ON PCR Clase R", "ticker": "PQCRO", "tipo": "obligacion_negociable", "nominales": 200000, "precio_referencia": 1.0190, "precio_fijo": false, "total_valuado": 203800.00 },
+        { "nombre": "FCI Allaria Dólar Ahorro - Cl.B", "ticker": "ALLARIA-USD", "tipo": "fci", "nominales": 625917.48, "precio_referencia": 1.0225, "precio_fijo": false, "total_valuado": 640000.00 },
+        { "nombre": "Pase overnight", "ticker": "PASE", "tipo": "pase", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 699999.79 },
+        { "nombre": "Disponibilidades", "ticker": "DISP", "tipo": "disponibilidades", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 7579.74 }
+      ]
+    },
+    {
+      "nombre": "Tandem Balanceado II",
+      "moneda": "ARS",
+      "patrimonio_neto": 101640.98,
+      "activos": [
+        { "nombre": "T30J6 - Lecap", "ticker": "T30J6", "tipo": "titulo_publico", "nominales": 10000, "precio_referencia": 1.4428, "precio_fijo": false, "total_valuado": 14428.20 },
+        { "nombre": "AL30 - Bonos Rep. Argentina 2030", "ticker": "AL30", "tipo": "titulo_publico", "nominales": 22, "precio_referencia": 970.0000, "precio_fijo": false, "total_valuado": 21340.00 },
+        { "nombre": "Disponibilidades", "ticker": "DISP", "tipo": "disponibilidades", "nominales": null, "precio_referencia": null, "precio_fijo": true, "total_valuado": 66011.15 }
+      ]
+    }
+  ]
+}

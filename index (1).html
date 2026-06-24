@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora TNA · FCI Tandem</title>
+<style>
+  :root {
+    --bg: #0F1117; --bg2: #181C27; --bg3: #1F2436;
+    --border: #2A2F42; --border2: #343A52;
+    --text: #E8EAF0; --text2: #8B91A8; --text3: #555D78;
+    --accent: #4F7CFF; --accent-bg: #1A2240;
+    --green: #22C9A0; --green-bg: #0D2620;
+    --red: #FF5C7A; --red-bg: #2A0F18;
+    --yellow: #F5C842; --yellow-bg: #2A2008;
+    --font: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --radius: 8px; --radius-lg: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
+  .header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; gap: 16px; height: 56px; position: sticky; top: 0; z-index: 100; }
+  .header-logo { font-size: 13px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+  .header-sep { width: 1px; height: 20px; background: var(--border2); }
+  .header-sub { font-size: 12px; color: var(--text2); }
+  .header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .header-date { font-size: 11px; color: var(--text3); font-family: var(--mono); }
+  .header-badge { font-size: 10px; background: var(--green-bg); color: var(--green); border-radius: 20px; padding: 2px 8px; font-weight: 600; }
+  .main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; }
+  .card-label { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+  .steps { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; }
+  .step { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text3); }
+  .step.active { color: var(--text); }
+  .step.done { color: var(--green); }
+  .step-num { width: 20px; height: 20px; border-radius: 50%; border: 1px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; flex-shrink: 0; }
+  .step-sep { width: 24px; height: 1px; background: var(--border2); }
+  .info-box { background: var(--accent-bg); border: 1px solid var(--accent); border-radius: var(--radius); padding: 14px 16px; font-size: 12px; color: var(--text2); line-height: 1.8; margin-bottom: 1rem; }
+  .info-box strong { color: var(--accent); }
+  .info-box code { background: var(--bg3); padding: 1px 6px; border-radius: 4px; font-family: var(--mono); font-size: 11px; color: var(--text); }
+  .fondo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+  .fondo-btn { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; cursor: pointer; text-align: left; transition: all 0.1s; width: 100%; }
+  .fondo-btn:hover { border-color: var(--border2); }
+  .fondo-btn.active { border-color: var(--accent); background: var(--accent-bg); }
+  .fondo-btn .fn { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .fondo-btn .fm { font-size: 11px; color: var(--text3); }
+  .badge { display: inline-flex; padding: 2px 7px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+  .b-ars { background: #0D2620; color: var(--green); }
+  .b-usd { background: var(--accent-bg); color: var(--accent); }
+  .b-tp  { background: #0D2620; color: var(--green); }
+  .b-on  { background: var(--accent-bg); color: var(--accent); }
+  .b-fci { background: #1A1040; color: #9B8FFF; }
+  .b-pase{ background: var(--yellow-bg); color: var(--yellow); }
+  .b-cpd { background: var(--red-bg); color: var(--red); }
+  .b-otro{ background: var(--bg3); color: var(--text3); }
+  .params-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 11px; color: var(--text2); font-weight: 500; }
+  .field input { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 7px 10px; font-size: 13px; color: var(--text); font-family: var(--font); width: 100%; }
+  .field input:focus { outline: none; border-color: var(--accent); }
+  .field input[readonly] { color: var(--text3); }
+  .field .hint { font-size: 10px; color: var(--text3); }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { font-size: 10px; font-weight: 600; color: var(--text3); text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.05em; }
+  th.r { text-align: right; }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
+  td.r { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: 11px; }
+  td.pos { color: var(--green); }
+  td.neg { color: var(--red); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg3); }
+  .row-total td { font-weight: 600; background: var(--bg3); border-top: 1px solid var(--border2); border-bottom: none; }
+  .pi { width: 100px; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 12px; color: var(--text); font-family: var(--mono); text-align: right; }
+  .pi:focus { outline: none; border-color: var(--accent); }
+  .pi.edited { border-color: var(--accent); background: var(--accent-bg); }
+  .res-input { width: 130px; background: var(--bg3); border: 1px solid var(--yellow-bg); border-radius: 6px; padding: 4px 8px; font-size: 12px; color: var(--yellow); font-family: var(--mono); text-align: right; }
+  .res-input:focus { outline: none; border-color: var(--yellow); }
+  .locked { color: var(--text3); font-size: 11px; font-style: italic; }
+  .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+  .metric { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; }
+  .metric.highlight { border-color: var(--accent); background: var(--accent-bg); }
+  .metric-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .metric-value { font-size: 22px; font-weight: 700; font-family: var(--mono); }
+  .metric-value.pos { color: var(--green); }
+  .metric-value.neg { color: var(--red); }
+  .metric-value.neu { color: var(--text); }
+  .metric-sub { font-size: 10px; color: var(--text3); margin-top: 4px; }
+  .formula-tag { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; font-size: 11px; color: var(--text2); margin-bottom: 1rem; line-height: 1.8; font-family: var(--mono); }
+  .formula-tag strong { color: var(--accent); }
+  .formula-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; font-size: 11px; color: var(--text2); line-height: 2; font-family: var(--mono); white-space: pre-wrap; overflow-x: auto; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border: 1px solid var(--border2); border-radius: var(--radius); background: transparent; color: var(--text2); font-size: 12px; cursor: pointer; font-family: var(--font); transition: all 0.1s; }
+  .btn:hover { background: var(--bg3); color: var(--text); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .btn-primary:hover { opacity: 0.88; background: var(--accent); }
+  .btn-sm { padding: 5px 12px; font-size: 11px; }
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 1rem; }
+  .hidden { display: none !important; }
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--radius); padding: 10px 16px; font-size: 12px; color: var(--text); z-index: 999; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="header-logo">FCI · Tandem</span>
+  <div class="header-sep"></div>
+  <span class="header-sub">Calculadora de TNA</span>
+  <div class="header-right">
+    <span class="header-badge" id="headerFecha">cargando...</span>
+    <span class="header-date" id="headerDate"></span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="steps">
+    <div class="step active" id="step1"><div class="step-num">1</div> Cargar datos</div>
+    <div class="step-sep"></div>
+    <div class="step" id="step2"><div class="step-num">2</div> Seleccionar fondo</div>
+    <div class="step-sep"></div>
+    <div class="step" id="step3"><div class="step-num">3</div> Ingresar precios</div>
+    <div class="step-sep"></div>
+    <div class="step" id="step4"><div class="step-num">4</div> Calcular TNA</div>
+  </div>
+
+  <div class="info-box" id="infoBox">
+    <strong>Flujo de uso diario:</strong><br>
+    Cada mañana, mandá el PDF del informe a tu asistente → te devuelve un <code>datos.json</code> actualizado →
+    subís ese archivo a GitHub reemplazando el anterior → recargás esta página y los datos se actualizan solos.
+  </div>
+
+  <div id="loadStatus" class="card">
+    <div class="card-label">1 · Estado de los datos</div>
+    <div id="loadMsg" style="font-size:13px; color:var(--text2);">Cargando datos del informe...</div>
+  </div>
+
+  <div class="card hidden" id="cardFondos">
+    <div class="card-label">2 · Seleccioná el fondo</div>
+    <div class="fondo-grid" id="fondoGrid"></div>
+  </div>
+
+  <div id="cardCalc" class="hidden">
+
+    <div class="card">
+      <div class="card-label">Parámetros del fondo</div>
+      <div class="params-grid">
+        <div class="field"><label>Fondo</label><input type="text" id="pFondo" readonly></div>
+        <div class="field"><label>Moneda</label><input type="text" id="pMoneda" readonly></div>
+        <div class="field">
+          <label>Patrimonio Neto</label>
+          <input type="number" id="pPN" step="0.01" oninput="recalc()">
+        </div>
+        <div class="field">
+          <label>Costos anuales (%)</label>
+          <input type="number" id="pCostos" value="1.74" step="0.01" oninput="recalc()">
+          <span class="hint">Se resta de la TNA bruta</span>
+        </div>
+        <div class="field"><label>Fecha del informe</label><input type="text" id="pFecha" readonly></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="formula-tag">
+        <strong>Fórmula:</strong> &nbsp;
+        Resultado nominal = Σ (Precio hoy − Precio ayer) × Nominales &nbsp;|&nbsp;
+        <strong>TNA = (Resultado / PN) × 365 − Costos%</strong>
+      </div>
+      <div class="card-label">3 · Ingresá precio de ayer y precio de hoy · activos con precio variable</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Activo</th><th>Tipo</th>
+              <th class="r">Nominales</th>
+              <th class="r" style="min-width:108px;">Precio ayer</th>
+              <th class="r" style="min-width:108px;">Precio hoy</th>
+              <th class="r">Diferencia</th>
+              <th class="r">Resultado</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+          <tfoot>
+            <tr class="row-total">
+              <td colspan="5">Resultado nominal total</td>
+              <td></td>
+              <td class="r" id="tResultado">—</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-sm" onclick="resetPrecios()">↺ Resetear precios</button>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="calcular()">⟳ Calcular TNA</button>
+      <button class="btn" onclick="exportarCSV()">↓ Exportar CSV</button>
+    </div>
+
+    <div id="results" class="hidden">
+      <div style="height:1.25rem;"></div>
+      <div class="metric-grid" id="metricGrid"></div>
+      <div class="card">
+        <div class="card-label">Detalle del cálculo</div>
+        <div id="formulaBox" class="formula-box"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-sm" onclick="copiar()">⧉ Copiar resultado</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let fondosData = [], fondoActivo = null, fechaInforme = '';
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('headerDate').textContent = new Date().toLocaleDateString('es-AR', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  cargarDatos();
+});
+
+async function cargarDatos() {
+  try {
+    const resp = await fetch('datos.json?v=' + Date.now());
+    if (!resp.ok) throw new Error('No se encontró datos.json');
+    const data = await resp.json();
+    fondosData   = data.fondos || [];
+    fechaInforme = data.fecha  || '';
+    document.getElementById('loadMsg').innerHTML = `<span style="color:var(--green)">✓ Datos cargados · Informe del <strong>${fechaInforme}</strong> · ${fondosData.length} fondos</span>`;
+    document.getElementById('headerFecha').textContent = fechaInforme;
+    renderFondoSelector();
+    setStep(2);
+  } catch(err) {
+    document.getElementById('loadMsg').innerHTML = `<span style="color:var(--red)">✗ Error: ${err.message}. Verificá que el archivo datos.json esté en el repositorio.</span>`;
+  }
+}
+
+function renderFondoSelector() {
+  const grid = document.getElementById('fondoGrid');
+  grid.innerHTML = '';
+  fondosData.forEach(f => {
+    const btn = document.createElement('button');
+    btn.className = 'fondo-btn';
+    btn.innerHTML = `<div class="fn">${f.nombre}</div><div class="fm"><span class="badge ${f.moneda==='USD'?'b-usd':'b-ars'}">${f.moneda}</span> &nbsp; PN: ${f.moneda==='USD'?'USD':'ARS'} ${fmt(f.patrimonio_neto, 0)}</div>`;
+    btn.onclick = () => {
+      document.querySelectorAll('.fondo-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      cargarFondo(f);
+    };
+    grid.appendChild(btn);
+  });
+  document.getElementById('cardFondos').classList.remove('hidden');
+}
+
+function cargarFondo(f) {
+  fondoActivo = f;
+  document.getElementById('pFondo').value  = f.nombre;
+  document.getElementById('pMoneda').value = f.moneda;
+  document.getElementById('pPN').value     = f.patrimonio_neto;
+  document.getElementById('pCostos').value = 1.74;
+  document.getElementById('pFecha').value  = fechaInforme;
+  renderTabla(f);
+  document.getElementById('cardCalc').classList.remove('hidden');
+  document.getElementById('results').classList.add('hidden');
+  setStep(3);
+  document.getElementById('cardCalc').scrollIntoView({ behavior: 'smooth' });
+}
+
+function tipoBadge(tipo) {
+  const t = (tipo||'').toLowerCase();
+  if (t.includes('titulo') || t.includes('publico') || t.includes('bono') || t.includes('lecap')) return ['b-tp','T. Público'];
+  if (t.includes('obligacion') || t.includes('negociable') || t === 'on') return ['b-on','ON'];
+  if (t.includes('fci') || t.includes('fondo')) return ['b-fci','FCI'];
+  if (t.includes('pase') || t.includes('caucion') || t.includes('apertura')) return ['b-pase','Pase'];
+  if (t.includes('cheque') || t.includes('cpd') || t.includes('pagare')) return ['b-cpd','CPD'];
+  return ['b-otro','Caja'];
+}
+
+function renderTabla(f) {
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  const mon = f.moneda === 'USD' ? 'USD ' : 'ARS ';
+  f.activos.forEach(a => {
+    const [cls, label] = tipoBadge(a.tipo);
+    const tr = document.createElement('tr');
+    tr.dataset.id   = a.ticker;
+    tr.dataset.nom  = a.nominales ?? 0;
+    tr.dataset.fijo = a.precio_fijo ? '1' : '0';
+    const nomFmt = a.nominales != null ? (a.nominales < 500 ? fmt(a.nominales,4) : fmt(a.nominales,0)) : '—';
+    if (a.precio_fijo) {
+      tr.innerHTML = `
+        <td><strong>${a.ticker}</strong> <span style="color:var(--text3)">· ${a.nombre}</span></td>
+        <td><span class="badge ${cls}">${label}</span></td>
+        <td class="r">—</td>
+        <td class="r" colspan="2"><span class="locked">valor fijo · ingresá resultado si aplica</span></td>
+        <td class="r">—</td>
+        <td class="r"><input class="res-input" id="res-${a.ticker}" value="0" step="0.01" oninput="recalc()" title="Resultado del día (interés devengado, etc.)"></td>`;
+    } else {
+      const ref = a.precio_referencia ?? '';
+      tr.innerHTML = `
+        <td><strong>${a.ticker}</strong> <span style="color:var(--text3)">· ${a.nombre}</span></td>
+        <td><span class="badge ${cls}">${label}</span></td>
+        <td class="r">${nomFmt}</td>
+        <td class="r"><input class="pi" id="payer-${a.ticker}" data-orig="${ref}" value="${ref}" step="0.0001" oninput="onEdit(this);recalc()" placeholder="0.0000"></td>
+        <td class="r"><input class="pi" id="phoy-${a.ticker}"  data-orig="${ref}" value="${ref}" step="0.0001" oninput="onEdit(this);recalc()" placeholder="0.0000"></td>
+        <td class="r" id="dif-${a.ticker}">0,000000</td>
+        <td class="r" id="res-td-${a.ticker}">${mon}0,00</td>`;
+    }
+    tbody.appendChild(tr);
+  });
+  recalc();
+}
+
+function onEdit(inp) {
+  inp.classList.toggle('edited', Math.abs(parseFloat(inp.value||0) - parseFloat(inp.dataset.orig||0)) > 0.000001);
+}
+
+function recalc() {
+  if (!fondoActivo) return 0;
+  const mon = fondoActivo.moneda === 'USD' ? 'USD ' : 'ARS ';
+  let total = 0;
+  fondoActivo.activos.forEach(a => {
+    if (a.precio_fijo) {
+      total += parseFloat(document.getElementById('res-' + a.ticker)?.value) || 0;
+    } else {
+      const pa  = parseFloat(document.getElementById('payer-' + a.ticker)?.value) || 0;
+      const ph  = parseFloat(document.getElementById('phoy-'  + a.ticker)?.value) || 0;
+      const dif = ph - pa;
+      const res = dif * (a.nominales || 0);
+      total += res;
+      const de = document.getElementById('dif-'    + a.ticker);
+      const re = document.getElementById('res-td-' + a.ticker);
+      if (de) { de.textContent = fmt(dif,6); de.className = 'r ' + (dif>0?'pos':dif<0?'neg':''); }
+      if (re) { re.textContent = mon + fmt(res,2); re.className = 'r ' + (res>0?'pos':res<0?'neg':''); }
+    }
+  });
+  const te = document.getElementById('tResultado');
+  if (te) { te.textContent = mon + fmt(total,2); te.className = 'r ' + (total>0?'pos':total<0?'neg':''); }
+  return total;
+}
+
+function resetPrecios() {
+  fondoActivo?.activos.forEach(a => {
+    if (!a.precio_fijo) {
+      const pa = document.getElementById('payer-' + a.ticker);
+      const ph = document.getElementById('phoy-'  + a.ticker);
+      if (pa) { pa.value = a.precio_referencia ?? ''; pa.classList.remove('edited'); }
+      if (ph) { ph.value = a.precio_referencia ?? ''; ph.classList.remove('edited'); }
+    } else {
+      const r = document.getElementById('res-' + a.ticker);
+      if (r) r.value = 0;
+    }
+  });
+  recalc();
+  document.getElementById('results').classList.add('hidden');
+}
+
+function calcular() {
+  const res    = recalc();
+  const pn     = parseFloat(document.getElementById('pPN').value) || 1;
+  const costos = parseFloat(document.getElementById('pCostos').value) || 0;
+  const mon    = fondoActivo?.moneda === 'USD' ? 'USD' : 'ARS';
+  const bruta  = (res / pn) * 365 * 100;
+  const neta   = bruta - costos;
+  const color  = neta >= 0 ? 'pos' : 'neg';
+
+  document.getElementById('metricGrid').innerHTML = `
+    <div class="metric highlight">
+      <div class="metric-label">TNA neta</div>
+      <div class="metric-value ${color}">${fmt(neta,4)}%</div>
+      <div class="metric-sub">bruta − ${fmt(costos,2)}% costos</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">TNA bruta</div>
+      <div class="metric-value neu">${fmt(bruta,4)}%</div>
+      <div class="metric-sub">(Resultado / PN) × 365</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Resultado nominal</div>
+      <div class="metric-value ${res>=0?'pos':'neg'}" style="font-size:16px;">${mon} ${fmt(res,2)}</div>
+      <div class="metric-sub">Σ (P.hoy − P.ayer) × nom.</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Patrimonio Neto</div>
+      <div class="metric-value neu" style="font-size:15px;">${mon} ${fmt(pn,2)}</div>
+      <div class="metric-sub">base del cálculo</div>
+    </div>`;
+
+  let det = '';
+  fondoActivo.activos.forEach(a => {
+    if (a.precio_fijo) {
+      const v = parseFloat(document.getElementById('res-' + a.ticker)?.value) || 0;
+      det += `  ${a.ticker.padEnd(16)} (fijo)                                   resultado = ${mon} ${fmt(v,2).padStart(16)}\n`;
+    } else {
+      const pa = parseFloat(document.getElementById('payer-' + a.ticker)?.value) || 0;
+      const ph = parseFloat(document.getElementById('phoy-'  + a.ticker)?.value) || 0;
+      const r  = (ph - pa) * (a.nominales || 0);
+      det += `  ${a.ticker.padEnd(14)} (${fmt(ph,6)} − ${fmt(pa,6)}) × ${fmt(a.nominales||0,0).padStart(12)} = ${mon} ${fmt(r,2).padStart(16)}\n`;
+    }
+  });
+
+  document.getElementById('formulaBox').textContent =
+`Resultado por activo:
+${det}
+  ─────────────────────────────────────────────────────────────────
+  Resultado nominal total                             = ${mon} ${fmt(res,2)}
+  Patrimonio Neto (PN)                                = ${mon} ${fmt(pn,2)}
+  ─────────────────────────────────────────────────────────────────
+  TNA bruta  = (Resultado / PN) × 365                = ${fmt(bruta,6)}%
+  Costos                                              = ${fmt(costos,4)}%
+  ─────────────────────────────────────────────────────────────────
+  TNA neta   = TNA bruta − Costos                    = ${fmt(neta,4)}%`;
+
+  document.getElementById('results').classList.remove('hidden');
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+  setStep(4);
+  window._res = { neta, bruta, res, pn, costos, mon, nombre: fondoActivo.nombre, fecha: fechaInforme };
+}
+
+function exportarCSV() {
+  if (!fondoActivo) return;
+  const pn = parseFloat(document.getElementById('pPN').value)||1;
+  const costos = parseFloat(document.getElementById('pCostos').value)||0;
+  const mon = fondoActivo.moneda;
+  const rows = [`Activo,Tipo,Nominales,Precio Ayer,Precio Hoy,Diferencia,Resultado ${mon}`];
+  fondoActivo.activos.forEach(a => {
+    if (a.precio_fijo) {
+      const v = parseFloat(document.getElementById('res-'+a.ticker)?.value)||0;
+      rows.push(`"${a.nombre}",${a.tipo},,,,, ${v}`);
+    } else {
+      const pa = parseFloat(document.getElementById('payer-'+a.ticker)?.value)||0;
+      const ph = parseFloat(document.getElementById('phoy-' +a.ticker)?.value)||0;
+      rows.push(`"${a.nombre}",${a.tipo},${a.nominales},${pa},${ph},${ph-pa},${(ph-pa)*(a.nominales||0)}`);
+    }
+  });
+  const resTotal = recalc();
+  const bruta = (resTotal/pn)*365*100;
+  rows.push('','Patrimonio Neto,'+pn,'Resultado nominal,'+resTotal,'TNA bruta,'+bruta,'Costos,'+costos,'TNA neta,'+(bruta-costos));
+  const blob = new Blob([rows.join('\n')], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=`TNA_${fondoActivo.nombre.replace(/\s/g,'_')}_${fechaInforme.replace(/\//g,'-')}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+}
+
+function copiar() {
+  const r = window._res; if(!r) return;
+  const txt = `${r.nombre} · ${r.fecha}\nResultado: ${r.mon} ${fmt(r.res,2)}\nPN: ${r.mon} ${fmt(r.pn,2)}\nTNA bruta: ${fmt(r.bruta,4)}%\nCostos: ${fmt(r.costos,2)}%\nTNA neta: ${fmt(r.neta,4)}%`;
+  navigator.clipboard.writeText(txt).then(() => showToast('Copiado al portapapeles'));
+}
+
+function fmt(n, dec=2) {
+  if (n==null||isNaN(n)) return '—';
+  return n.toLocaleString('es-AR',{minimumFractionDigits:dec,maximumFractionDigits:dec});
+}
+
+function setStep(n) {
+  for(let i=1;i<=4;i++){
+    const el=document.getElementById('step'+i);
+    if(el) el.className='step '+(i<n?'done':i===n?'active':'');
+  }
+}
+
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+</script>
+</body>
+</html>
